@@ -1,0 +1,41 @@
+# github.com/t-yuki/goalloctest/pkg1
+../../goalloctest/pkg1/pkg1.go:4: can inline Max1
+../../goalloctest/pkg1/pkg1.go:22: can inline max
+../../goalloctest/pkg1/pkg1.go:13: inlining call to Max1
+../../goalloctest/pkg1/pkg1.go:18: inlining call to max
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:4) MOVQ    a+0(FP),CX
+	0000 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:4) TEXT    Max1+0(SB),$0-0 [1]
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:4) MOVQ    b+8(FP),AX
+	9999 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:4) MOVQ    a+0(FP),CX [1]
+no pushback: 0032 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:13) MOVQ    a+0(FP),CX
+	0025 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:12) FUNCDATA $1,gclocals·1+0(SB) [1]
+pushback
+	0033 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:13) NOP     ,
+	0034 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:13) MOVQ    b+8(FP),AX
+	after
+	0033 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:13) MOVQ    b+8(FP),AX
+	0034 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:13) NOP     ,
+no pushback: 0065 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:18) MOVQ    a+0(FP),CX
+	0058 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:17) FUNCDATA $1,gclocals·2+0(SB) [1]
+pushback
+	0066 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:18) NOP     ,
+	0067 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:18) MOVQ    b+8(FP),AX
+	after
+	0066 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:18) MOVQ    b+8(FP),AX
+	0067 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:18) NOP     ,
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:22) MOVQ    a+0(FP),CX
+	0089 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:22) TEXT    max+0(SB),$0-0 [1]
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:22) MOVQ    b+8(FP),AX
+	9999 (/home/sey/gopath/src/github.com/t-yuki/goalloctest/pkg1/pkg1.go:22) MOVQ    a+0(FP),CX [1]
+# github.com/t-yuki/mygosandbox/alloc1
+./analysis1.go:19: undefined: pkg1.Max
+./analysis1.go:23: undefined: pkg1.MaxerImpl
+./analysis1.go:26: undefined: pkg1.MaxerImpl
+./analysis1.go:29: undefined: pkg1.MaxerImpl
+./analysis1.go:32: undefined: pkg1.MaxerImpl
+./analysis1.go:35: undefined: pkg1.MaxerImpl
+./analysis1.go:40: undefined: pkg1.MaxerImpl
+./analysis1.go:43: undefined: pkg1.MaxerImpl
+./analysis1.go:46: undefined: pkg1.MaxerImpl
+./analysis1.go:49: undefined: pkg1.MaxerImpl
+./analysis1.go:49: too many errors

@@ -1,0 +1,119 @@
+# github.com/t-yuki/mygosandbox/alloc1
+./a.go:3: can inline ab
+./main.go:12: can inline call1
+./main.go:8: inlining call to call1
+./main.go:8: call1 &b1 does not escape
+./main.go:9: main ... argument does not escape
+./main.go:13: moved to heap: b1
+./main.go:14: &b1 escapes to heap
+pushback
+	0030 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    $1,R8
+	0031 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    $1,DX
+	0032 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    autotmp_0003+0(SP),BX
+	after
+	0030 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    autotmp_0003+0(SP),BX
+	0031 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    $1,R8
+	0032 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    $1,DX
+no pushback: 0037 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    (CX),CX
+	0036 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) CHECKNIL CX, [1]
+pushback
+	0038 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) NOP     ,
+	0039 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    $type.int+0(SB),AX
+	0040 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    autotmp_0002+0(SP),SI
+	after
+	0038 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    autotmp_0002+0(SP),SI
+	0039 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) NOP     ,
+	0040 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    $type.int+0(SB),AX
+no pushback: 0051 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVQ    autotmp_0002+0(SP),BX
+	0050 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:9) MOVSQ   , [1]
+no pushback: 0070 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:13) MOVQ    8(SP),AX
+	0069 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/main.go:13) PCDATA  $0,$-1 [1]
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    h+0(FP),AX
+	0105 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) TEXT    type..hash.[1]interface {}+0(SB),2,$0-0 [1]
+pushback
+	0119 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0120 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0007+0(SP),BP
+	after
+	0119 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0007+0(SP),BP
+	0120 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+no pushback: 0127 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    (AX),BX
+	0126 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) CHECKNIL AX, [1]
+no pushback: 0131 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    (AX),BP
+	0130 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) CHECKNIL AX, [1]
+no pushback: 0141 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    (AX),BP
+	0140 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) CHECKNIL AX, [1]
+no pushback: 0148 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    p+16(FP),BX
+	0147 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    $16,8(SP) [1]
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0006+0(SP),CX
+	0155 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) CALL    ,runtime.nilinterhash+0(SB) [1]
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    h+0(FP),AX
+	9999 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0006+0(SP),CX [1]
+pushback
+	0182 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0183 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0009+0(SP),BP
+	after
+	0182 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0009+0(SP),BP
+	0183 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+pushback
+	0187 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0188 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    q+24(FP),BX
+	after
+	0187 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    q+24(FP),BX
+	0188 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+no pushback: 0193 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    (BX),CX
+	0192 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) ADDQ    BP,BX [1]
+pushback
+	0194 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0195 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    8(BX),SI
+	after
+	0194 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    8(BX),SI
+	0195 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+pushback
+	0195 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0196 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0197 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    p+16(FP),BX
+	after
+	0195 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    p+16(FP),BX
+	0196 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0197 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+no pushback: 0202 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    (BX),AX
+	0201 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) ADDQ    BP,BX [1]
+pushback
+	0203 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+	0204 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    8(BX),DX
+	after
+	0203 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    8(BX),DX
+	0204 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) NOP     ,
+no pushback: 9999 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    autotmp_0008+0(SP),AX
+	0223 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) CALL    ,runtime.efaceeq+0(SB) [1]
+no pushback: 0229 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    eq+0(FP),BX
+no pushback: 0235 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) MOVQ    eq+0(FP),BX
+	0185 (/home/sey/gopath/src/github.com/t-yuki/mygosandbox/alloc1/a.go:1) JGE     $0,235 [0]
+# github.com/t-yuki/mygosandbox/alloc1
+HEADER = -H13 -T0x400c00 -D0x0 -R0x1000
+searching for runtime.a in $WORK/runtime.a
+searching for runtime.a in /home/sey/go/pkg/linux_amd64/runtime.a
+ 0.17 deadcode
+ 0.19 mkfwd
+ 0.19 patch
+ 0.20 follow
+ 0.21 span
+ 0.30 pclntab=248872 bytes, funcdata total 18584 bytes
+ 0.31 symsize = 0
+ 0.31 dodata
+ 0.32 reloc
+ 0.33 asmb
+ 0.33 codeblk
+ 0.33 rodatblk
+ 0.34 datblk
+ 0.34 sym
+ 0.34 symsize = 28080
+ 0.34 symsize = 123120
+ 0.34 dwarf
+ 0.35 symsize = 123120
+ 0.37 dwarf pass 2.
+ 0.38 headr
+ 0.38 cpu time
+24888 symbols
+24 sizeof adr
+104 sizeof prog
