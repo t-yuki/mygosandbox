@@ -27,9 +27,9 @@ func NewModel2() *Model2 {
 	m.prop1.ch, m.prop1.setch, m.prop1.donech = prop1ch, prop1setch, prop1donech
 
 	m.closing.Add(1)
-	go func(closing *sync.WaitGroup, closingCh <-chan struct{}) {
+	go func(closingWg *sync.WaitGroup, closingCh <-chan struct{}) {
 		prop1Proc(prop1setch, closingCh, prop1ch, prop1donech)
-		defer closing.Done()
+		defer closingWg.Done()
 	}(m.closing.WaitGroup, m.closing.ch)
 	runtime.SetFinalizer(m, finalizeModel2)
 
@@ -42,7 +42,12 @@ func (m *Model2) Close() {
 }
 
 func (m *Model2) Prop1() string {
-	return <-m.prop1.ch
+	select {
+	case val := <-m.prop1.ch:
+		return val
+	case <-m.closing.ch:
+		panic("its closed")
+	}
 }
 
 func (m *Model2) SetProp1(val string) {
@@ -58,6 +63,9 @@ func (m *Model2) SetProp1(val string) {
 }
 
 func prop1Proc(in <-chan string, closingIn <-chan struct{}, out chan<- string, doneOut chan<- string) {
+	defer close(doneOut)
+	defer close(out)
+
 	var prop1 string
 	for {
 		select {
@@ -75,6 +83,7 @@ func prop1Proc(in <-chan string, closingIn <-chan struct{}, out chan<- string, d
 func finalizeModel2(m *Model2) {
 	select {
 	case <-m.closing.ch:
+		break
 	default:
 		m.Close()
 	}
