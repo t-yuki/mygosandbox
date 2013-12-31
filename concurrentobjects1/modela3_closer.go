@@ -7,6 +7,8 @@ import (
 	"sync"
 )
 
+var _ ModelAExt1 = NewModel3()
+
 type Model3 struct {
 	closing struct {
 		ch chan struct{}

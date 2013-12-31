@@ -6,6 +6,8 @@ import (
 	"sync"
 )
 
+var _ ModelA = NewModel2()
+
 type Model2 struct {
 	quit struct {
 		ch chan struct{}

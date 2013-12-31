@@ -6,6 +6,8 @@ import (
 	"sync"
 )
 
+var _ ModelAExt2 = NewModel4()
+
 type Model4 struct {
 	quit struct {
 		ch chan struct{}
@@ -47,6 +49,13 @@ func (m *Model4) SetProp1(val string) {
 	if val != nval {
 		panic(fmt.Errorf("expect %s but %s", val, nval))
 	}
+}
+
+func (m *Model4) Prop2() int {
+	return 0
+}
+
+func (m *Model4) SetProp2(val int) {
 }
 
 func (m *Model4) finalize() {

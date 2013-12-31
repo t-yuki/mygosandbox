@@ -4,6 +4,8 @@ import (
 	"sync"
 )
 
+var _ ModelA = NewModel1()
+
 type Model1 struct {
 	prop1 struct {
 		val string
