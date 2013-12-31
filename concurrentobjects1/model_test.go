@@ -22,6 +22,7 @@ func TestModels_serial(t *testing.T) {
 			models = append(models, cobjs.NewModel1())
 			models = append(models, cobjs.NewModel2())
 			models = append(models, cobjs.NewModel3())
+			models = append(models, cobjs.NewModel4())
 			models = append(models, cobjs.NewModelB1())
 		}
 
@@ -38,6 +39,11 @@ func TestModels_serial(t *testing.T) {
 				if m, ok := obj1.(cobjs.ModelB); ok {
 					if pong := m.Ping(val); pong != val {
 						t.Errorf("expected %s but %s", val, pong)
+					}
+				}
+				if m, ok := obj1.(cobjs.ModelAExt2); ok {
+					if m.SetProp2(i); m.Prop2() != i {
+						t.Errorf("expected %d but %d", i, m.Prop2())
 					}
 				}
 				if m, ok := obj1.(cobjs.ModelAExt1); ok {
@@ -70,6 +76,7 @@ func TestModels_parallel(t *testing.T) {
 			models = append(models, cobjs.NewModel1())
 			models = append(models, cobjs.NewModel2())
 			models = append(models, cobjs.NewModel3())
+			models = append(models, cobjs.NewModel4())
 			models = append(models, cobjs.NewModelB1())
 		}
 
@@ -89,6 +96,10 @@ func TestModels_parallel(t *testing.T) {
 				if m, ok := obj1.(cobjs.ModelA); ok {
 					m.SetProp1(val)
 					m.Prop1()
+				}
+				if m, ok := obj1.(cobjs.ModelAExt2); ok {
+					m.SetProp2(i)
+					m.Prop2()
 				}
 				if m, ok := obj1.(cobjs.ModelB); ok {
 					if pong := m.Ping(val); pong != val {
