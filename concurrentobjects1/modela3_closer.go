@@ -1,15 +1,17 @@
-package concurrentobjects
+package cobjs1
 
 import (
+	"errors"
 	"fmt"
 	"runtime"
 	"sync"
 )
 
-type Model2 struct {
+type Model3 struct {
 	closing struct {
 		ch chan struct{}
 		*sync.WaitGroup
+		sync.Mutex
 	}
 	prop1 struct {
 		ch     <-chan string
@@ -18,8 +20,8 @@ type Model2 struct {
 	}
 }
 
-func NewModel2() *Model2 {
-	m := &Model2{}
+func NewModel3() *Model3 {
+	m := &Model3{}
 	m.closing.ch = make(chan struct{})
 	m.closing.WaitGroup = &sync.WaitGroup{}
 
@@ -28,20 +30,29 @@ func NewModel2() *Model2 {
 
 	m.closing.Add(1)
 	go func(closingWg *sync.WaitGroup, closingCh <-chan struct{}) {
-		prop1Proc(prop1setch, closingCh, prop1ch, prop1donech)
+		model3prop1Proc(prop1setch, closingCh, prop1ch, prop1donech)
 		defer closingWg.Done()
 	}(m.closing.WaitGroup, m.closing.ch)
-	runtime.SetFinalizer(m, finalizeModel2)
+
+	runtime.SetFinalizer(m, (*Model3).finalize)
 
 	return m
 }
 
-func (m *Model2) Close() {
-	close(m.closing.ch)
-	m.closing.Wait()
+func (m *Model3) Close() error {
+	m.closing.Lock()
+	defer m.closing.Unlock()
+	select {
+	case <-m.closing.ch:
+		return errors.New("already closed")
+	default:
+		close(m.closing.ch)
+		m.closing.Wait()
+		return nil
+	}
 }
 
-func (m *Model2) Prop1() string {
+func (m *Model3) Prop1() string {
 	select {
 	case val := <-m.prop1.ch:
 		return val
@@ -50,7 +61,7 @@ func (m *Model2) Prop1() string {
 	}
 }
 
-func (m *Model2) SetProp1(val string) {
+func (m *Model3) SetProp1(val string) {
 	select {
 	case m.prop1.setch <- val:
 		nval := <-m.prop1.donech
@@ -62,10 +73,16 @@ func (m *Model2) SetProp1(val string) {
 	}
 }
 
-func prop1Proc(in <-chan string, closingIn <-chan struct{}, out chan<- string, doneOut chan<- string) {
-	defer close(doneOut)
-	defer close(out)
+func (m *Model3) finalize() {
+	select {
+	case <-m.closing.ch:
+		break
+	default:
+		m.Close()
+	}
+}
 
+func model3prop1Proc(in <-chan string, closingIn <-chan struct{}, out chan<- string, doneOut chan<- string) {
 	var prop1 string
 	for {
 		select {
@@ -77,14 +94,5 @@ func prop1Proc(in <-chan string, closingIn <-chan struct{}, out chan<- string, d
 		case <-closingIn:
 			return
 		}
-	}
-}
-
-func finalizeModel2(m *Model2) {
-	select {
-	case <-m.closing.ch:
-		break
-	default:
-		m.Close()
 	}
 }
