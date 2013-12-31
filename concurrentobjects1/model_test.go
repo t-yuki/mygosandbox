@@ -3,14 +3,10 @@ package cobjs1_test
 import (
 	cobjs "."
 	"fmt"
-	"io"
 	"runtime"
 	"sync/atomic"
 	"testing"
 )
-
-type ModelA cobjs.ModelA
-type ModelB cobjs.ModelB
 
 func TestModels_serial(t *testing.T) {
 	models := make([]interface{}, 0, 100)
@@ -22,17 +18,17 @@ func TestModels_serial(t *testing.T) {
 	for i := 0; i < len(models); i++ {
 		go func(obj1 interface{}) {
 			val := fmt.Sprintf("%d", i)
-			if m, ok := obj1.(ModelA); ok {
+			if m, ok := obj1.(cobjs.ModelA); ok {
 				if m.SetProp1(val); m.Prop1() != val {
 					t.Errorf("expected %s but %s", val, m.Prop1())
 				}
 			}
-			if m, ok := obj1.(ModelB); ok {
+			if m, ok := obj1.(cobjs.ModelB); ok {
 				if pong := m.Ping(val); pong != val {
 					t.Errorf("expected %s but %s", val, pong)
 				}
 			}
-			if m, ok := obj1.(io.Closer); ok {
+			if m, ok := obj1.(cobjs.ModelAExt1); ok {
 				m.Close()
 			}
 		}(models[i])
@@ -63,11 +59,11 @@ func TestModels_parallel(t *testing.T) {
 				}
 			}()
 			val := fmt.Sprintf("%d", i)
-			if m, ok := obj1.(ModelA); ok {
+			if m, ok := obj1.(cobjs.ModelA); ok {
 				m.SetProp1(val)
 				m.Prop1()
 			}
-			if m, ok := obj1.(ModelB); ok {
+			if m, ok := obj1.(cobjs.ModelB); ok {
 				if pong := m.Ping(val); pong != val {
 					t.Errorf("expected %s but %s", val, pong)
 				}
@@ -76,7 +72,7 @@ func TestModels_parallel(t *testing.T) {
 	}
 
 	for _, obj1 := range models {
-		if m, ok := obj1.(io.Closer); ok {
+		if m, ok := obj1.(cobjs.ModelAExt1); ok {
 			runtime.Gosched()
 			m.Close()
 		}
