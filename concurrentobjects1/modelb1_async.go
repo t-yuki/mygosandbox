@@ -24,14 +24,16 @@ func NewModelB1() *ModelB1 {
 	pingCh := make(chan struct {
 		val   string
 		resch chan<- string
-	}, 5)
+	}, runtime.GOMAXPROCS(0)*2)
 	m.pingCh = pingCh
 
-	m.quit.Add(1)
-	go func(quitCh <-chan struct{}, quitWg *sync.WaitGroup) {
-		modelB1PingProc(pingCh, quitCh)
-		defer quitWg.Done()
-	}(m.quit.ch, m.quit.WaitGroup)
+	for i := -1; i < cap(pingCh)/2; i++ {
+		m.quit.Add(1)
+		go func(quitCh <-chan struct{}, quitWg *sync.WaitGroup) {
+			modelB1PingProc(pingCh, quitCh)
+			defer quitWg.Done()
+		}(m.quit.ch, m.quit.WaitGroup)
+	}
 
 	runtime.SetFinalizer(m, (*ModelB1).finalize)
 
@@ -47,6 +49,14 @@ func (m *ModelB1) Ping(val string) (pong string) {
 	m.pingCh <- p
 	nval := <-resch
 	return nval
+}
+
+func (m *ModelB1) PingAsync(val string, pongCh chan<- string) {
+	p := struct {
+		val   string
+		resch chan<- string
+	}{val, pongCh}
+	m.pingCh <- p
 }
 
 func (m *ModelB1) finalize() {
