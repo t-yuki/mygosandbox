@@ -24,8 +24,8 @@ func NewModel4() *Model4 {
 	m.quit.WaitGroup = &sync.WaitGroup{}
 
 	var prop1chans, prop2chans propchan.Channels
-	m.prop1, prop1chans = propchan.MakeProperty()
-	m.prop2, prop2chans = propchan.MakeProperty()
+	m.prop1, prop1chans = propchan.Make()
+	m.prop2, prop2chans = propchan.Make()
 
 	m.quit.Add(1)
 	go func(quitCh <-chan struct{}, quitWg *sync.WaitGroup) {

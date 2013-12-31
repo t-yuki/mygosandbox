@@ -16,7 +16,7 @@ type Channels struct {
 	Done chan<- interface{}
 }
 
-func MakeProperty() (p Property, c Channels) {
+func Make() (p Property, c Channels) {
 	ch, setch, donech := make(chan interface{}), make(chan interface{}), make(chan interface{})
 	p.ch, p.setch, p.donech = ch, setch, donech
 	c.Out, c.In, c.Done = ch, setch, donech
