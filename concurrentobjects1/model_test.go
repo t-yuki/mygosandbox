@@ -56,7 +56,6 @@ func TestModels_serial(t *testing.T) {
 		for _, l := range lines {
 			t.Log(l)
 		}
-		panic(ok)
 		t.Fatal("leaked goroutine detected")
 	}
 }
