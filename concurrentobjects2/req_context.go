@@ -18,9 +18,15 @@ type ReqContext struct {
 }
 
 type op1context struct {
-	s       string
-	resch   chan<- bool
-	abortch <-chan struct{}
+	s        string
+	resch    chan<- bool
+	cancelch <-chan struct{}
+}
+
+// or done signal only
+type op1context2 struct {
+	s      string
+	donech chan<- struct{}
 }
 
 func NewReqContext() *ReqContext {
@@ -51,9 +57,9 @@ func (m *ReqContext) Close() {
 	m.closing.Unlock()
 }
 
-func (m *ReqContext) Op1(val string) {
+func (m *ReqContext) Op1(val string, cancel <-chan struct{}, res chan<- bool) {
 	select {
-	case m.op1.reqch <- op1context{s: val}:
+	case m.op1.reqch <- op1context{s: val, cancelch: cancel, resch: res}:
 		break
 	case <-m.closing.ch:
 		panic("its closed")
@@ -66,7 +72,7 @@ func (*ReqContext) op1Proc(in <-chan op1context, closingIn <-chan struct{}) {
 		case ctx := <-in:
 			// something todo
 			select {
-			case <-ctx.abortch:
+			case <-ctx.cancelch:
 				// check closingIn or not?
 				ctx.resch <- false
 				continue
