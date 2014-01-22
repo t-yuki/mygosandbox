@@ -4,8 +4,8 @@ import (
 	"sync"
 )
 
-// req/res channelパターン
-type ReqRes struct {
+// req channelパターン
+type Req struct {
 	closing struct {
 		ch chan struct{}
 		sync.WaitGroup
@@ -13,28 +13,26 @@ type ReqRes struct {
 	}
 	op1 struct {
 		reqch chan<- string
-		resch <-chan string
 	}
 }
 
-func NewReqRes() *ReqRes {
-	m := &ReqRes{}
+func NewReq() *Req {
+	m := &Req{}
 	m.closing.ch = make(chan struct{})
 
-	op1reqch, op1resch := make(chan string), make(chan string)
+	op1reqch := make(chan string)
 	m.op1.reqch = op1reqch
-	m.op1.resch = op1resch
 
 	m.closing.Add(1)
 	go func() {
-		m.op1Proc(op1reqch, m.closing.ch, op1resch)
+		m.op1Proc(op1reqch, m.closing.ch)
 		m.closing.Done()
 	}()
 
 	return m
 }
 
-func (m *ReqRes) Close() {
+func (m *Req) Close() {
 	m.closing.Lock()
 	select {
 	case <-m.closing.ch:
@@ -46,21 +44,21 @@ func (m *ReqRes) Close() {
 	m.closing.Unlock()
 }
 
-func (m *ReqRes) Op1(val string) {
+func (m *Req) Op1(val string) {
 	select {
 	case m.op1.reqch <- val:
-		<-m.op1.resch
+		break
 	case <-m.closing.ch:
 		panic("its closed")
 	}
 }
 
-func (*ReqRes) op1Proc(in <-chan string, closingIn <-chan struct{}, resOut chan<- string) {
+func (*Req) op1Proc(in <-chan string, closingIn <-chan struct{}) {
 	for {
 		select {
 		case op1 := <-in:
-			// something tood
-			resOut <- op1
+			// something todo
+			_ = op1
 		case <-closingIn:
 			return
 		}

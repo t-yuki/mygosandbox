@@ -66,6 +66,9 @@ func (m *SingleSubscriber) Unsubscribe() {
 }
 
 func (*SingleSubscriber) ev1Proc(in <-chan chan<- string, closingIn <-chan struct{}) {
+	if cap(in) != 0 {
+		panic("it should be cap 0")
+	}
 	var sub chan<- string
 	for {
 		select {

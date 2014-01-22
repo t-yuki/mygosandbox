@@ -67,6 +67,9 @@ func (m *GetSetDone) SetProp1(val string) {
 }
 
 func (*GetSetDone) getsetProc(in <-chan string, closingIn <-chan struct{}, out chan<- string, doneOut chan<- struct{}) {
+	if cap(in) != 0 {
+		panic("it must be cap 0")
+	}
 	var prop1 string
 	for {
 		select {

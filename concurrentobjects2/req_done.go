@@ -56,10 +56,13 @@ func (m *ReqDone) Op1(val string) {
 }
 
 func (*ReqDone) op1Proc(in <-chan string, closingIn <-chan struct{}, doneOut chan<- struct{}) {
+	if cap(in) != 0 {
+		panic("it must be cap 0")
+	}
 	for {
 		select {
 		case op1 := <-in:
-			// something tood
+			// something todo
 			_ = op1
 			doneOut <- struct{}{}
 		case <-closingIn:
