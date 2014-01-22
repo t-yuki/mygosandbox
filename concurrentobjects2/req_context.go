@@ -57,7 +57,18 @@ func (m *ReqContext) Close() {
 	m.closing.Unlock()
 }
 
-func (m *ReqContext) Op1(val string, cancel <-chan struct{}, res chan<- bool) {
+func (m *ReqContext) Op1(val string) {
+	res := make(chan bool)
+	select {
+	case m.op1.reqch <- op1context{s: val, cancelch: nil, resch: res}:
+		<-res
+		break
+	case <-m.closing.ch:
+		panic("its closed")
+	}
+}
+
+func (m *ReqContext) Op1Async(val string, cancel <-chan struct{}, res chan<- bool) {
 	select {
 	case m.op1.reqch <- op1context{s: val, cancelch: cancel, resch: res}:
 		break
