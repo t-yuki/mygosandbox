@@ -5,7 +5,7 @@ import (
 )
 
 type Goroutine struct {
-	st Status
+	st Lifestage
 	ch chan struct{}
 	wg sync.WaitGroup
 }

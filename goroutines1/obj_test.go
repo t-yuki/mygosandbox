@@ -11,7 +11,7 @@ type StartStopWaiter interface {
 }
 
 type Obj1 struct {
-	status Status
+	status Lifestage
 	x      Goroutine
 	y      Goroutine
 	z      Goroutine

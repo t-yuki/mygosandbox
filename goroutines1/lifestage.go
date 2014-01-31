@@ -12,35 +12,35 @@ const (
 	stoppedState
 )
 
-// Status is a unidirectional status management helper.
+// Lifestage is a unidirectional status management helper.
 // Created --> Starting --> Started --> Stooped
 //         <-> Creating
-type Status struct {
+type Lifestage struct {
 	st int32
 }
 
-func (s *Status) Stopped() bool {
+func (s *Lifestage) Stopped() bool {
 	// TODO: use CAS
 	st := atomic.LoadInt32(&s.st)
 	return st == stoppedState
 }
 
-func (s *Status) SetCreating() bool {
+func (s *Lifestage) SetCreating() bool {
 	return atomic.CompareAndSwapInt32(&s.st, createdState, creatingState)
 }
 
-func (s *Status) SetCreated() bool {
+func (s *Lifestage) SetCreated() bool {
 	return atomic.CompareAndSwapInt32(&s.st, creatingState, createdState)
 }
 
-func (s *Status) SetStarting() bool {
+func (s *Lifestage) SetStarting() bool {
 	return atomic.CompareAndSwapInt32(&s.st, createdState, startingState)
 }
 
-func (s *Status) SetStarted() bool {
+func (s *Lifestage) SetStarted() bool {
 	return atomic.CompareAndSwapInt32(&s.st, startingState, startedState)
 }
 
-func (s *Status) SetStopped() bool {
+func (s *Lifestage) SetStopped() bool {
 	return atomic.CompareAndSwapInt32(&s.st, startedState, stoppedState)
 }
