@@ -51,6 +51,10 @@ func (s *Goroutine) Stop() {
 	s.ch <- struct{}{}
 }
 
+func (s *Goroutine) Stopped() bool {
+	return s.st.Stopped()
+}
+
 func (s *Goroutine) Wait() {
 	if !s.st.Stopped() {
 		// illegal state

@@ -58,7 +58,11 @@ func (o *Obj1) xProc() {
 func (o *Obj1) yProc(<-chan struct{}) {
 }
 
-func (o *Obj1) zProc(int, <-chan struct{}) {
+func (o *Obj1) zProc(x int, stop <-chan struct{}) {
+	<-stop
+	if !o.z.Stopped() {
+		panic("oops")
+	}
 }
 
 func (o *Obj1) SetParam1(int) {
