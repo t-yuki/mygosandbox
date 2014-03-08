@@ -29,10 +29,12 @@ func TestFlock(t *testing.T) {
 	}
 	defer syscall.Close(fd3)
 
+	// because it is already locked by fd, LOCK_EX on fd2 fails
 	if err = syscall.Flock(fd2, syscall.LOCK_EX|syscall.LOCK_NB); err == nil {
 		t.Fatal(err)
 	}
 
+	// even if it is already locked by fd, LOCK_SH on fd2 successes
 	if err = syscall.Flock(fd2, syscall.LOCK_SH|syscall.LOCK_NB); err != nil {
 		t.Fatal(err)
 	}
@@ -40,9 +42,11 @@ func TestFlock(t *testing.T) {
 	if err = syscall.Close(fd); err != nil {
 		t.Fatal(err)
 	}
+	// even if fd is unlocked by closing fd, because it is already locked by fd2, LOCK_EX fails
 	if err = syscall.Flock(fd3, syscall.LOCK_EX|syscall.LOCK_NB); err == nil {
 		t.Fatal(err)
 	}
+	// because fd is unlocked by closing fd, LOCK_EX on fd2 successes
 	if err = syscall.Flock(fd2, syscall.LOCK_EX|syscall.LOCK_NB); err != nil {
 		t.Fatal(err)
 	}
