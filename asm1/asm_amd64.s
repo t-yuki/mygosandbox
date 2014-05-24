@@ -1,5 +1,5 @@
 // from "cmd/ld/textflag.h"
-// but see https://code.google.com/p/go/issues/detail?id=6695
+// but see go vet bug: https://code.google.com/p/go/issues/detail?id=6695
 #define NOSPLIT 4
 
 TEXT ·Asm1(SB),4,$0-16
@@ -9,6 +9,7 @@ TEXT ·Asm1(SB),4,$0-16
 	RET
 
 // see also 
+//   http://golang.org/doc/asm or Japanese translation: http://godocjp.herokuapp.com/doc/asm
 //   http://golang.org/src/pkg/hash/crc32/crc32_amd64.s
 //   http://golang.org/src/pkg/runtime/memmove_amd64.s
 //   http://comments.gmane.org/gmane.os.plan9.general/70287
